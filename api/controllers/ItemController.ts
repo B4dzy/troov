@@ -3,9 +3,19 @@ import Item from '../models/ItemModel';
 
 class ItemController {
 
-    async getItem(req: Request, res: Response) {
+    async getAllItem(req: Request, res: Response) {
         try {
             const data = await Item.find();
+            res.status(200).send(data);
+        } catch (error) {
+            res.status(500).send(error);
+        }
+    }
+
+    async getItem(req: Request, res: Response) {
+        try {
+            const data = await Item.findById(req.params.id);
+
             res.status(200).send(data);
         } catch (error) {
             res.status(500).send(error);
