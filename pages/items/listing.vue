@@ -1,0 +1,3 @@
+<template>
+    Items/Listing
+</template>
