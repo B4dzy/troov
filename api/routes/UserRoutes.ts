@@ -4,7 +4,7 @@ import { authenticated } from '../middlewares/authenticated';
 
 const UserRoutes = express.Router();
 
-UserRoutes.post('/user/auth', UserController.authUser);
+UserRoutes.post('/auth', UserController.authUser);
 UserRoutes.get('/user/:id', authenticated, UserController.getUser);
 UserRoutes.get('/user', authenticated, UserController.getAllUser);
 UserRoutes.post('/user', UserController.createUser);
