@@ -8,7 +8,13 @@ export default defineNuxtConfig({
             API_BASE_URL: process.env.API_BASE_URL
         }
     },
-    modules: ['@nuxtjs/color-mode'],
+    modules: ['@nuxtjs/color-mode', '@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt'],
+    piniaPersistedstate: {
+        cookieOptions: {
+            sameSite: 'strict',
+        },
+        storage: 'cookies'
+    },
     colorMode: {
         classSuffix: ''
     },
