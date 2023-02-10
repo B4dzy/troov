@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 class UserController {
 
-    async authUser(req: Request, res: Response) {
+    async loginUser(req: Request, res: Response) {
         try {
             const { email, password } = req.body;
             const user = await User.findOne({ email });
@@ -16,7 +16,19 @@ class UserController {
 
             const token = jwt.sign({ _id: user?._id }, process.env.JWT_SECRET || 'JWT_SECRET', { expiresIn: '1h' });
 
-            res.status(200).send({token});
+            res.status(200).send(token);
+        } catch (error) {
+            res.status(500).send(error);
+        }
+    }
+
+    async authenticatedUser(req: Request | any, res: Response) {
+        try {
+            const token = req.headers.authorization?.split(" ")[1] as string;
+            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'JWT_SECRET') as any;
+
+
+            res.status(200).send(req.user);
         } catch (error) {
             res.status(500).send(error);
         }
