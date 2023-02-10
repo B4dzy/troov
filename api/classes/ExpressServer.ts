@@ -1,4 +1,6 @@
 import express from "express";
+import cors from "cors";
+
 import UserRoutes from "../routes/UserRoutes";
 import ItemRoutes from "../routes/ItemRoutes";
 
@@ -11,6 +13,8 @@ export class ExpressServer {
         this.port = port;
 
         this.app.use(express.json());
+
+        this.app.use(cors());
 
         this.app.use('/api', ItemRoutes);
         this.app.use('/api', UserRoutes);
