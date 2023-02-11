@@ -1,3 +1,0 @@
-<template>
-    Items/Delete
-</template>

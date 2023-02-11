@@ -1,5 +1,5 @@
 <template>
-    <button class="dark:text-white" v-on:click="toggleDarkMode(colorMode.value === 'dark' | 'system' ? 'light' : 'dark')">
+    <button class="text-secondary dark:text-white" v-on:click="toggleDarkMode(colorMode.value === 'dark' | 'system' ? 'light' : 'dark')">
         <svg id="theme-toggle-dark-icon" class="w-5 h-5" :class="$colorMode.value === 'dark' && 'hidden'"
             fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>

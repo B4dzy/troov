@@ -1,30 +1,33 @@
 <template>
-    <section>
-        <form @submit.prevent="registerSubmit">
-            <div>
-                <label for="email">
-                    <input type="text" v-model="email" name="email" placeholder="Email">
-                </label>
-            </div>
+    <BaseNavbar />
+    <section class="flex h-screen justify-center items-center bg-gray-200/50 dark:bg-secondary">
+        <div class="bg-white dark:bg-gray-800 p-5 max-w-xl mx-auto rounded-md">
+            <h2 class="text-3xl font-cursive text-secondary dark:text-primary">S'inscrire</h2>
+            <form @submit.prevent="registerSubmit" class="mt-10 space-y-8">
+                <input v-model="email" class="w-full border rounded h-12 px-4 focus:outline-none" placeholder="Adresse email" type="email" />
 
-            <div>
-                <label for="username">
-                    <input type="text" v-model="username" name="username" placeholder="Nom d'utilisateur">
-                </label>
-            </div>
+                <div class="flex items-center">
+                    <input v-model="username" class="w-full border rounded h-12 px-4 focus:outline-none -mr-7" placeholder="Nom d'utilisateur" type="text" />
+                </div>
 
-            <div>
-                <label for="password">
-                    <input type="password" v-model="password" name="password" placeholder="Mot de passe">
-                </label>
-            </div>
+                <div class="flex items-center">
+                    <input v-model="password" class="w-full border rounded h-12 px-4 focus:outline-none -mr-7" placeholder="Mot de passe" type="password" />
+                </div>
 
-            <div>
-                <input type="submit" value="S'inscrire">
-            </div>
-        </form>
+                <div>
+                    <div class="flex flex-col-reverse md:flex-row md:items-center justify-between ">
+                        <div class="flex text-gray-400 dark:text-gray-100 text-sm self-center md:self-auto mt-4 md:mt-0">
+                            <p class="mr-1">
+                                Vous avez déjà un compte ?
+                            </p>
+                            <NuxtLink class="underline mr-3" to="/login">Se connecter</NuxtLink>
+                        </div>
 
-        <NuxtLink to="/">Se connecter</NuxtLink>
+                        <Button text="S'inscrire" />
+                    </div>
+                </div>
+            </form>
+        </div>
     </section>
 </template>
 
@@ -48,6 +51,7 @@ export default {
             const config = useRuntimeConfig();
             const auth = useAuthStore();
             const router = useRouter();
+
             await $fetch(`${config.public.API_BASE_URL}/user`, {
                 method: 'POST',
                 body: JSON.stringify({
@@ -59,7 +63,7 @@ export default {
                 .then(response => {
                     auth
                         .login({ email: this.email, password: this.password })
-                        .then((_response) => router.push("/dashboard"))
+                        .then((_response) => router.push("/"))
                         .catch((error) => console.log("API error", error));
                 })
                 .catch(error => { throw error })

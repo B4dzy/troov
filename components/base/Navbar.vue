@@ -25,9 +25,15 @@
                     <DarkModeButton />
 
                     <div class="flex items-center" v-if="isLoggedIn">
-                        <p v-if="!pending" class="mr-6 text-secondary dark:text-white"><span class="font-bold">{{ user.username }} ({{ user.email }})</span></p>
+                        <p v-if="!pending && !error" class="mr-6 text-secondary dark:text-white">
+                            <span class="font-bold">
+                                {{ user.username }} ({{ user.email }})
+                            </span>
+                        </p>
 
-                        <button class="px-6 py-2 text-sm transition-colors duration-300 rounded-full shadow-xl text-white uppercase font-semibold bg-red-400 hover:bg-red-400/80" v-on:click="logout">Déconnexion</button>
+                        <button
+                            class="px-6 py-2 text-sm transition-colors duration-300 rounded-full shadow-xl text-white uppercase font-semibold bg-red-400 hover:bg-red-400/80"
+                            v-on:click="logout">Déconnexion</button>
                     </div>
 
                     <NuxtLink v-else :to="$route.name === 'login' ? '/register' : '/login'">
@@ -47,18 +53,28 @@ export default {
     data() {
         const auth = useAuthStore();
         const config = useRuntimeConfig();
+        const router = useRouter();
 
         if (auth.token) {
-            const { pending, data: user } = useLazyFetch(`${config.public.API_BASE_URL}/auth/me`, {
+            const { pending, data: user, error } = useLazyFetch(`${config.public.API_BASE_URL}/auth/me`, {
                 headers: {
                     "Authorization": "Bearer " + auth.token
                 },
             });
 
+            //TODO: Faire un middleware qui vérifie si le token JWT a expiré
+            // Shitcode qui permet de logout un utilisateur qui est connecté mais que le token JWT a expiré
+            if (error && error.value) {
+                auth.logout()
+                    .then((_response) => router.go())
+                    .catch((error) => console.log("API error", error));
+            }
+
             return {
                 showMenu: false,
                 isLoggedIn: auth.isLoggedIn,
                 pending: pending,
+                error: error,
                 user: user,
                 colorMode: useColorMode()
             }
