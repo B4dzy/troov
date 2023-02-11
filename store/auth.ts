@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia';
 
-
-
 export const useAuthStore = defineStore('auth', {
     state: () => {
         return {
@@ -9,6 +7,11 @@ export const useAuthStore = defineStore('auth', {
         }
     },
     persist: true,
+    getters: {
+        isLoggedIn(state) {
+            return !!state.token;
+        },
+    },
     actions: {
         async login(loginForm: any) {
             const config = useRuntimeConfig();
