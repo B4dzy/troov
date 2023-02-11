@@ -25,9 +25,12 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/store/auth";
 
+definePageMeta({
+    middleware: ["guest"]
+});
+
 const authStore = useAuthStore();
 const router = useRouter();
-
 interface loginForm {
     email: string;
     password: string;
@@ -36,7 +39,7 @@ interface loginForm {
 let loginForm: loginForm = {
     email: "",
     password: "",
-};
+}
 
 function login() {
     authStore

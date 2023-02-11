@@ -10,10 +10,14 @@
 <script setup>
 import { useAuthStore } from "~/store/auth";
 
+definePageMeta({
+    middleware: ["user"]
+});
+
 const auth = useCookie('auth').value;
 const config = useRuntimeConfig();
 
-const { data: user } = useFetch(`${config.public.API_BASE_URL}/auth/me`, {
+const { data: user } = await useFetch(`${config.public.API_BASE_URL}/auth/me`, {
     headers: {
         "Authorization": "Bearer " + auth.token
     },

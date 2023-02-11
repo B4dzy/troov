@@ -31,6 +31,10 @@
 <script lang="ts">
 import { useAuthStore } from '~/store/auth';
 
+definePageMeta({
+    middleware: ["guest"]
+});
+
 export default {
     data() {
         return {
@@ -44,7 +48,6 @@ export default {
             const config = useRuntimeConfig();
             const auth = useAuthStore();
             const router = useRouter();
-
             await $fetch(`${config.public.API_BASE_URL}/user`, {
                 method: 'POST',
                 body: JSON.stringify({
