@@ -27,15 +27,9 @@ definePageMeta({
 });
 
 export default {
-  name: 'ContactForm',
   data() {
-    const config = useRuntimeConfig();
-    const route = useRoute();
-
-    const {data: item} = useFetch(`${config.public.API_BASE_URL}/item/${route.params.id}`);
-
     return {
-      name: item.value.name,
+      name: ''
     }
   },
   methods: {
@@ -56,6 +50,14 @@ export default {
       }).then(() => router.push("/"));
 
     }
+  },
+  async created() {
+    const config = useRuntimeConfig();
+    const route = useRoute();
+
+    const { data: item } = await useFetch(`${config.public.API_BASE_URL}/item/${route.params.id}`);
+
+    this.name = item.value.name;
   }
 }
 </script>
