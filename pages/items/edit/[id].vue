@@ -28,11 +28,11 @@ definePageMeta({
 
 export default {
   name: 'ContactForm',
-  async data() {
+  data() {
     const config = useRuntimeConfig();
     const route = useRoute();
 
-    const {data: item} = await useFetch(`${config.public.API_BASE_URL}/item/${route.params.id}`);
+    const {data: item} = useFetch(`${config.public.API_BASE_URL}/item/${route.params.id}`);
 
     return {
       name: item.value.name,
