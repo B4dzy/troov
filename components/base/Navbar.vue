@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div class="bg-white dark:bg-gray-800 shadow-md">
+        <div class="bg-white dark:bg-gray-800 shadow-md z-40">
             <nav class="container px-6 py-2 mx-auto md:flex md:justify-between md:items-center">
                 <div class="flex items-center justify-between">
                     <NuxtLink to="/">
-                        <img class="w-32" :src="`images/logo-${$colorMode.value}.png`" alt="logo">
+                        <img class="w-32" :src="`/images/logo-${$colorMode.preference}.png`" alt="logo">
                     </NuxtLink>
 
                     <div @click="showMenu = !showMenu" class="flex md:hidden">
@@ -31,9 +31,15 @@
                             </span>
                         </p>
 
-                        <button
-                            class="px-6 py-2 text-sm transition-colors duration-300 rounded-full shadow-xl text-white uppercase font-semibold bg-red-400 hover:bg-red-400/80"
-                            v-on:click="logout">Déconnexion</button>
+                        <div class="space-x-2">
+                            <NuxtLink to="/items/create"><Button text="Ajouter un objet" /></NuxtLink>
+
+                            <button
+                                class="px-6 py-2 text-sm transition-colors duration-300 rounded-full shadow-xl text-white uppercase font-semibold bg-red-400 hover:bg-red-400/80"
+                                v-on:click="logout">
+                                Déconnexion
+                            </button>
+                        </div>
                     </div>
 
                     <NuxtLink v-else :to="$route.name === 'login' ? '/register' : '/login'">
