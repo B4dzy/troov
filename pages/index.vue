@@ -10,19 +10,24 @@
                                 Nom de l'objet
                             </th>
                             <th scope="col" class="px-6 py-3">
+                                Ajouté le
+                            </th>
+                            <th v-if="authStore.isLoggedIn" scope="col" class="px-6 py-3">
                                 Actions
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="item in items" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ item.name }}
                             </th>
-                            <td class="text-center px-6 py-4 space-x-1">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ DateTime.fromISO(item.createdAt).toLocaleString(DateTime.DATE_FULL) }}
+                            </th>
+                            <td v-if="authStore.isLoggedIn" class="text-center px-6 py-4 space-x-1">
                                 <NuxtLink :to="`/items/edit/${item._id}`">
-                                    <button class="fill-primary">
+                                    <button :disabled="authStore.isLoggedIn ? false : true" class="fill-primary">
                                         <svg width="20" height="20" viewBox="0 0 27 27"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -33,7 +38,7 @@
                                     </button>
                                 </NuxtLink>
 
-                                <button v-on:click="deleteItem(item._id)" class="fill-red-400">
+                                <button :disabled="authStore.isLoggedIn ? false : true" v-on:click="deleteItem(item._id)" class="fill-red-400">
                                     <svg width="20" height="20" viewBox="0 0 27 27" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" clip-rule="evenodd"
                                             d="M7.98752 5.625H3.375C2.75368 5.625 2.25 6.12868 2.25 6.75C2.25 7.37132 2.75368 7.875 3.375 7.875H4.56812L5.49533 22.7105C5.6065 24.4892 7.08155 25.875 8.86376 25.875H18.1362C19.9185 25.875 21.3934 24.4892 21.5047 22.7105L22.4319 7.875H23.625C24.2463 7.875 24.75 7.37132 24.75 6.75C24.75 6.12868 24.2463 5.625 23.625 5.625H21.3832C21.377 5.62494 21.3708 5.62494 21.3646 5.625H19.0125C18.4913 3.05748 16.2214 1.125 13.5 1.125C10.7787 1.125 8.5087 3.05748 7.98752 5.625ZM10.317 5.625H16.683C16.2197 4.31416 14.9695 3.375 13.5 3.375C12.0305 3.375 10.7804 4.31416 10.317 5.625ZM20.1774 7.875H6.82251L7.74096 22.5702C7.77801 23.1631 8.26969 23.625 8.86376 23.625H18.1362C18.7303 23.625 19.222 23.1631 19.2591 22.5702L20.1774 7.875ZM16.0639 11.2609C16.6837 11.3043 17.1511 11.8419 17.1076 12.4617L16.6368 19.1952C16.5935 19.8151 16.0559 20.2824 15.4361 20.2391C14.8162 20.1957 14.3489 19.6581 14.3923 19.0383L14.8632 12.3048C14.9065 11.6849 15.4441 11.2176 16.0639 11.2609ZM10.9361 11.261C11.5559 11.2177 12.0935 11.6849 12.1368 12.3048L12.6078 19.0384C12.6511 19.6581 12.1837 20.1958 11.564 20.2391C10.9441 20.2824 10.4065 19.8151 10.3632 19.1953L9.89234 12.4617C9.849 11.842 10.3163 11.3043 10.9361 11.261Z" />
@@ -50,26 +55,35 @@
     </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useAuthStore } from '~/store/auth';
+import { DateTime } from 'luxon';
 
-const auth = useCookie('auth').value;
 const config = useRuntimeConfig();
+const auth = useCookie('auth').value as any;
+const authStore = useAuthStore();
 
-const { data: items, refresh: refreshItems } = await useAsyncData(
+/**
+ * @description Permet de récupérer la liste des items de façon asynchrone
+ */
+const { data: items, refresh: refreshItems }: any = await useAsyncData(
     'items',
     () => $fetch(`${config.public.API_BASE_URL}/item`, {
         method: 'GET',
     })
 );
 
-const deleteItem = (id) => {
+/**
+ * @description Permet de supprimer un item et de recharger la liste des items
+ * @param {string} id - id unique de l'item
+ */
+const deleteItem = (id: any) => {
     $fetch(`${config.public.API_BASE_URL}/item/${id}`, {
         method: 'DELETE',
         headers: {
-            "Authorization": "Bearer " + auth.token
+            "Authorization": "Bearer " + auth?.token
         },
-    }).then((item) => {
+    }).then((item: any) => {
 
         delete items.value[item];
         refreshItems();

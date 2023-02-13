@@ -4,15 +4,18 @@
         <div class="bg-white dark:bg-gray-800 shadow-md p-6 max-w-xl mx-auto rounded-md">
             <h2 class="text-3xl font-cursive text-secondary dark:text-primary">Se connecter</h2>
             <form @submit.prevent="login" class="mt-10 space-y-8">
-                <input v-model="loginForm.email" class="w-full border rounded h-12 px-4 focus:outline-none" placeholder="Adresse email" type="email" />
+                <input v-model="loginForm.email" class="w-full border rounded h-12 px-4 focus:outline-none"
+                    placeholder="Adresse email" type="email" />
 
                 <div class="flex items-center">
-                    <input v-model="loginForm.password" class="w-full border rounded h-12 px-4 focus:outline-none -mr-7" placeholder="Mot de passe" type="password" />
+                    <input v-model="loginForm.password" class="w-full border rounded h-12 px-4 focus:outline-none -mr-7"
+                        placeholder="Mot de passe" type="password" />
                 </div>
-                
+
                 <div>
                     <div class="flex flex-col-reverse md:flex-row md:items-center justify-between ">
-                        <div class="flex text-gray-400 dark:text-gray-100 text-sm self-center md:self-auto mt-4 md:mt-0">
+                        <div
+                            class="flex text-gray-400 dark:text-gray-100 text-sm self-center md:self-auto mt-4 md:mt-0">
                             <p class="mr-1">
                                 Vous n'avez pas de compte ?
                             </p>
@@ -31,23 +34,26 @@
 import { useAuthStore } from "~/store/auth";
 
 definePageMeta({
-    middleware: ["guest"]
+    middleware: ["user"]
 });
 
 const authStore = useAuthStore();
 const router = useRouter();
 
-interface loginForm {
+interface ILoginForm {
     email: string;
     password: string;
 }
 
-let loginForm: loginForm = {
+let loginForm: ILoginForm = {
     email: "",
     password: "",
-};
+}
 
-function login() {
+/**
+ * @description Permet de connecter un utilisateur à l'envoi du formulaire via la méthode login() du store 'auth'
+ */
+const login = () => {
     authStore
         .login(loginForm)
         .then((_response) => router.push("/"))

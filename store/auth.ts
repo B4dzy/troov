@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia';
 
+/**
+ * @description Store qui gère l'état de l'authentification
+ */
 export const useAuthStore = defineStore('auth', {
     state: () => {
         return {
@@ -8,11 +11,19 @@ export const useAuthStore = defineStore('auth', {
     },
     persist: true,
     getters: {
+        /**
+         * @description Vérifie si un utilisateur est connecté
+         * @return {boolean} state.token
+         */
         isLoggedIn(state) {
             return !!state.token;
         },
     },
     actions: {
+        /**
+         * @description Permet l'authentification d'un utilisateur via son email & mdp puis stock le token JWT dans le state 'token'
+         * @param {any} loginForm
+         */
         async login(loginForm: any) {
             const config = useRuntimeConfig();
 
@@ -25,6 +36,9 @@ export const useAuthStore = defineStore('auth', {
                 })
                 .catch(error => { throw error })
         },
+        /**
+         * @description Permet de déconnecter un utilisateur connecté en réinitialisant le state stocké 'token'
+         */
         async logout() {
             this.token = null;
         }

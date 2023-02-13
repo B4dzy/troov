@@ -24,7 +24,7 @@
 
 <script>
 definePageMeta({
-    middleware: ["user"]
+    middleware: ["guest"]
 });
 
 export default {
@@ -35,6 +35,9 @@ export default {
         }
     },
     methods: {
+        /**
+         * @description Permet de créer un item à l'envoi du formulaire
+         */
         handleSubmit: function () {
             const config = useRuntimeConfig();
             const auth = useCookie('auth').value;

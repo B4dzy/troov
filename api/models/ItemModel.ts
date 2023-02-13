@@ -4,6 +4,7 @@ import { IItem, IItemDocument, IItemModel } from '../interfaces/IItem';
 const ItemSchema: Schema<IItemDocument> = new Schema(
   {
     name: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now }
   }
 );
 
