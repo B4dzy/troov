@@ -23,7 +23,7 @@
 
 <script>
 definePageMeta({
-  middleware: ["user"]
+  middleware: ["guest"]
 });
 
 export default {
@@ -33,6 +33,9 @@ export default {
     }
   },
   methods: {
+    /**
+    * @description Permet l'édition d'un item ciblé par son id à l'envoi du formulaire
+    */
     handleSubmit: function () {
       const config = useRuntimeConfig();
       const auth = useCookie('auth').value;
@@ -51,6 +54,9 @@ export default {
 
     }
   },
+  /**
+  * @description Méthode asynchrone qui permet de récupérer des données avant le rendu de la page, ici utilisé pour récupérer notre objet avant le rendu final
+  */
   async created() {
     const config = useRuntimeConfig();
     const route = useRoute();

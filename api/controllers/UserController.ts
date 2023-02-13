@@ -48,17 +48,6 @@ class UserController {
         }
     }
 
-    async checkTokenUser(req: Request, res: Response) {
-        try {
-            const token = req.headers.authorization?.split(" ")[1] as string;
-            const decoded = jwt.verify(token, process.env.JWT_SECRET || 'JWT_SECRET') as any;
-
-            res.status(200).json({ valid: true });
-        } catch (error) {
-            res.status(200).json({ valid: false });
-        }
-    }
-
     /**
      * GET /api/item/:id
      * @description Permet de récupérer un utilisateur par son id
