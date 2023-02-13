@@ -1,42 +1,47 @@
-# Nuxt 3 Minimal Starter
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+# Application du test technique Troov
 
-## Setup
+Bonjour, vous trouverez dans ce readme comment installer et configurer l'application.
 
-Make sure to install the dependencies:
 
-```bash
-# yarn
-yarn install
 
-# npm
-npm install
 
-# pnpm
-pnpm install
-```
+## Installation
 
-## Development Server
-
-Start the development server on http://localhost:3000
+Après avoir cloné le projet, installer les packages npm :
 
 ```bash
-npm run dev
+  cd troov
+  npm i
 ```
 
-## Production
+Renommer le fichier .env.local en .env
 
-Build the application for production:
+Se rendre dans le dossier "api" et installer également les packages npm :
 
 ```bash
-npm run build
+  cd ./api/
+  npm i
 ```
+Suivre la même logique avec le fichier .env.local (Renommer le fichier .env.local en .env).
 
-Locally preview production build:
-
+Une fois les packages installés, il suffit de démarrer le serveur API* :
 ```bash
-npm run preview
+  npm run dev
+```
+*Cette commande va automatiquement compiler l'API, donc pas besoin de passer par `npm run build`.
+
+Retournez à la racine du projet et démarrer le serveur Nitro Nuxt 3 :
+```bash
+  cd ..
+  npm run dev -o
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+N'oubliez pas de configurer le fichier .env de l'API pour bien configurer la BDD MongoDB. De même avec le fichier .env du projet Nuxt afin de bien paramétrer la bonne URI de l'API.
+
+## Tech Stack
+
+**Client:** Nuxt 3.x, TailwindCSS
+
+**Server:** Node, Express, MongoDB via Mongoose, Bcrypt pour le hashage des mdp
